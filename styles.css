@@ -1,0 +1,495 @@
+/* 
+   Enhanced Weather Card Animations
+   Professional animations with unique effects for each card type
+*/
+
+/* Base card transition properties */
+#forecast > div, #hourly-forecast > div, #current-weather > div {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Weather card hover effects - different for each type */
+#forecast > div:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+#hourly-forecast > div:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+#current-weather > div:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+}
+
+/* Add subtle glow effect on hover for all cards */
+#forecast > div::after, #hourly-forecast > div::after, #current-weather > div::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    opacity: 0;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+#forecast > div:hover::after, #hourly-forecast > div:hover::after, #current-weather > div:hover::after {
+    opacity: 0.6;
+}
+
+/* Entry animations for each forecast day card - different for each card */
+#forecast > div:nth-child(1) {
+    animation: slideFromBottom 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation-delay: 0.1s;
+    opacity: 0;
+}
+
+#forecast > div:nth-child(2) {
+    animation: slideFromRight 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+}
+
+#forecast > div:nth-child(3) {
+    animation: slideFromTop 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
+}
+
+#forecast > div:nth-child(4) {
+    animation: slideFromLeft 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation-delay: 0.4s;
+    opacity: 0;
+}
+
+#forecast > div:nth-child(5) {
+    animation: fadeAndScale 1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+/* Improved hourly card animations with staggered timing */
+#hourly-forecast > div {
+    animation: fadeInSlideUp 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    opacity: 0;
+}
+
+/* Stagger the hourly cards */
+#hourly-forecast > div:nth-child(1) { animation-delay: 0.05s; }
+#hourly-forecast > div:nth-child(2) { animation-delay: 0.1s; }
+#hourly-forecast > div:nth-child(3) { animation-delay: 0.15s; }
+#hourly-forecast > div:nth-child(4) { animation-delay: 0.2s; }
+#hourly-forecast > div:nth-child(5) { animation-delay: 0.25s; }
+#hourly-forecast > div:nth-child(6) { animation-delay: 0.3s; }
+#hourly-forecast > div:nth-child(7) { animation-delay: 0.35s; }
+#hourly-forecast > div:nth-child(8) { animation-delay: 0.4s; }
+
+/* Content reveal animations inside cards */
+#forecast > div img, #hourly-forecast > div img {
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.4s;
+    opacity: 0;
+}
+
+#forecast > div p, #hourly-forecast > div p {
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.6s;
+    opacity: 0;
+}
+
+/* Add subtle shimmer effect on load */
+#forecast > div::before, #hourly-forecast > div::before, #current-weather > div::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(30deg);
+    animation: shimmer 3s infinite;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Add class to trigger shimmer effect */
+#forecast > div.loaded::before, #hourly-forecast > div.loaded::before, #current-weather > div.loaded::before {
+    opacity: 1;
+}
+
+/* Current weather card special animation */
+#current-weather {
+    animation: pulseAndFade 1s ease forwards;
+    position: relative;
+}
+
+/* WIND SPEED ANIMATIONS (First card) */
+#current-weather .grid > div:nth-child(1) {
+    animation: fadeInRight 0.6s ease forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
+    position: relative;
+}
+
+/* Special glow effect for wind speed */
+#current-weather .grid > div:nth-child(1)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(152, 251, 152, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+}
+
+#current-weather .grid > div:nth-child(1):hover::after {
+    opacity: 1;
+}
+
+/* Add special wind icon animation */
+#current-weather .grid > div:nth-child(1) .fas {
+    animation: windFlow 2s ease-in-out infinite alternate;
+}
+
+/* Wind speed value special effect */
+#current-weather .grid > div:nth-child(1):hover span {
+    color: #98fb98;
+    text-shadow: 0 0 5px rgba(152, 251, 152, 0.7);
+}
+
+#current-weather .grid > div:nth-child(1):hover .fas {
+    color: #98fb98;
+    filter: drop-shadow(0 0 3px rgba(152, 251, 152, 0.7));
+}
+
+/* HUMIDITY ANIMATIONS (Second card) */
+#current-weather .grid > div:nth-child(2) {
+    animation: pulseAndGlow 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+    position: relative;
+}
+
+/* Special glow effect for humidity */
+#current-weather .grid > div:nth-child(2)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(135, 206, 250, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+}
+
+#current-weather .grid > div:nth-child(2):hover::after {
+    opacity: 1;
+}
+
+/* Add special water drop icon animation */
+#current-weather .grid > div:nth-child(2) .fas {
+    animation: waterDrop 1.5s ease-in-out infinite alternate;
+}
+
+/* Humidity percentage special effect */
+#humidity {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#humidity::after {
+    content: '%';
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+#current-weather .grid > div:nth-child(2):hover #humidity {
+    color: #8bf0ff;
+    text-shadow: 0 0 5px rgba(139, 240, 255, 0.7);
+}
+
+#current-weather .grid > div:nth-child(2):hover .fas {
+    color: #8bf0ff;
+    filter: drop-shadow(0 0 3px rgba(139, 240, 255, 0.7));
+}
+
+/* FEELS LIKE ANIMATIONS (Third card) */
+#current-weather .grid > div:nth-child(3) {
+    animation: fadeInLeft 0.6s ease forwards;
+    animation-delay: 0.7s;
+    opacity: 0;
+    position: relative;
+}
+
+/* Special glow effect for feels like */
+#current-weather .grid > div:nth-child(3)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 165, 0, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+}
+
+#current-weather .grid > div:nth-child(3):hover::after {
+    opacity: 1;
+}
+
+/* Add special thermometer icon animation */
+#current-weather .grid > div:nth-child(3) .fas {
+    animation: temperaturePulse 1.8s ease-in-out infinite alternate;
+}
+
+/* Feels like temperature special effect */
+#current-weather .grid > div:nth-child(3):hover span {
+    color: #ffd280;
+    text-shadow: 0 0 5px rgba(255, 165, 0, 0.7);
+}
+
+#current-weather .grid > div:nth-child(3):hover .fas {
+    color: #ffd280;
+    filter: drop-shadow(0 0 3px rgba(255, 165, 0, 0.7));
+}
+
+/* Define all the animations */
+@keyframes slideFromBottom {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideFromRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideFromTop {
+    from { opacity: 0; transform: translateY(-40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideFromLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeAndScale {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInSlideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pulseAndFade {
+    0% { opacity: 0; transform: scale(0.95); }
+    50% { opacity: 0.5; transform: scale(1.02); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-150%) rotate(30deg); }
+    100% { transform: translateX(150%) rotate(30deg); }
+}
+
+/* Add a subtle bounce effect when the forecast loads */
+#forecast-container.loaded {
+    animation: subtleBounce 0.5s ease forwards;
+}
+
+@keyframes subtleBounce {
+    0% { transform: translateY(10px); opacity: 0; }
+    50% { transform: translateY(-5px); opacity: 0.8; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Add a reveal effect for daily forecast cards */
+#forecast {
+    perspective: 1000px;
+}
+
+/* Card interior content animations - we're targeting the weather icons */
+#forecast img, #hourly-forecast img, #current-weather-icon {
+    transition: transform 0.3s ease;
+}
+
+#forecast > div:hover img, #hourly-forecast > div:hover img {
+    transform: scale(1.15) rotate(5deg);
+}
+
+#current-weather:hover #current-weather-icon {
+    transform: scale(1.1) rotate(-5deg);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+}
+
+/* Location name animation */
+#location-name {
+    animation: fadeAndSlideDown 0.7s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeAndSlideDown {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Add pulse and glow animation for humidity */
+@keyframes pulseAndGlow {
+    0% { opacity: 0; transform: scale(0.8); }
+    70% { opacity: 0.9; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Water drop animation for humidity icon */
+@keyframes waterDrop {
+    0% { transform: translateY(0) scale(1); opacity: 0.7; }
+    50% { transform: translateY(2px) scale(1.1); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 0.7; }
+}
+
+/* Wind flow animation for wind speed icon */
+@keyframes windFlow {
+    0% { transform: translateX(0) scale(1); opacity: 0.7; }
+    50% { transform: translateX(2px) scale(1.05); opacity: 1; }
+    100% { transform: translateX(0) scale(1); opacity: 0.7; }
+}
+
+/* Temperature pulse animation for feels-like icon */
+@keyframes temperaturePulse {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+    50% { transform: translateY(-1px) rotate(3deg); opacity: 1; }
+    100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+}
+
+/* Date text animation */
+#current-date {
+    animation: fadeIn 0.7s ease forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+}
+
+/* Current temperature animation */
+#current-temp {
+    display: inline-block;
+    animation: countUp 1s ease forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
+}
+
+@keyframes countUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Weather description animation */
+#weather-description {
+    animation: fadeIn 0.7s ease forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+/* Mobile-specific animations */
+@media (max-width: 640px) {
+    /* Simplified animations for better performance on mobile */
+    #forecast > div, #hourly-forecast > div {
+        animation: simpleFade 0.5s ease forwards;
+    }
+    
+    #forecast > div:nth-child(1) { animation-delay: 0.1s; }
+    #forecast > div:nth-child(2) { animation-delay: 0.2s; }
+    #forecast > div:nth-child(3) { animation-delay: 0.3s; }
+    #forecast > div:nth-child(4) { animation-delay: 0.4s; }
+    #forecast > div:nth-child(5) { animation-delay: 0.5s; }
+    
+    @keyframes simpleFade {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Reduce hover effects on mobile */
+    #forecast > div:hover, #hourly-forecast > div:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Special animation for the privacy policy modal */
+#privacy-policy-modal > div {
+    animation: scaleIn 0.3s ease forwards;
+    transform-origin: center;
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Search section animations */
+.bg-white.bg-opacity-20 {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+#search-input:focus {
+    animation: glowPulse 1.5s infinite alternate;
+}
+
+@keyframes glowPulse {
+    from { box-shadow: 0 0 0 rgba(59, 130, 246, 0.5); }
+    to { box-shadow: 0 0 10px rgba(59, 130, 246, 0.7); }
+}
+
+/* Adding smooth transitions to all buttons */
+button {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+button:hover {
+    transform: translateY(-3px);
+}
+
+button:active {
+    transform: translateY(0);
+}
