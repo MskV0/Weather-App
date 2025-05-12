@@ -517,3 +517,134 @@ function getWeatherIcon(code) {
     if (code <= 99) return `11${daySuffix}`; // Thunderstorm
     return `50${daySuffix}`; // Mist/unknown
 }
+
+let debounceTimer;
+
+document.addEventListener("DOMContentLoaded", () => {
+    searchInput.addEventListener("input", debounceSearch);
+    
+});
+
+function debounceSearch() {
+    clearTimeout(debounceTimer);
+    const query = searchInput.value.trim();
+    
+    if (!query) {
+        searchDropdown.classList.add("hidden");
+        return;
+    }
+    
+    debounceTimer = setTimeout(() => {
+        fetchCitySuggestions(query);
+    }, 300); 
+}
+
+async function fetchCitySuggestions(query) {
+    try {
+        searchDropdown.innerHTML = '<div class="px-4 py-2 text-gray-500">Loading suggestions...</div>';
+        searchDropdown.classList.remove("hidden");
+        
+        const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&language=en&format=json`);
+        
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.results && data.results.length > 0) {
+            displayCitySuggestions(data.results);
+        } else {
+            searchDropdown.innerHTML = '<div class="px-4 py-2 text-gray-500">No cities found</div>';
+        }
+    } catch (error) {
+        console.error("Error fetching city suggestions:", error);
+        searchDropdown.innerHTML = '<div class="px-4 py-2 text-red-500">Error loading suggestions</div>';
+    }
+}
+
+function displayCitySuggestions(cities) {
+    searchDropdown.innerHTML = '';
+        cities.forEach(city => {
+        const item = document.createElement("div");
+        item.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center";
+        
+        const cityName = `${city.name}, ${city.country}`;
+        
+        item.innerHTML = `
+            <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
+            <div>
+                <div class="font-medium">${city.name}</div>
+                <div class="text-sm text-gray-500">${city.country}${city.admin1 ? ` - ${city.admin1}` : ''}</div>
+            </div>
+        `;
+        
+        item.addEventListener("click", () => {
+            searchInput.value = cityName;
+            searchDropdown.classList.add("hidden");
+            handleSearch();
+        });
+        
+        searchDropdown.appendChild(item);
+    });
+    
+    searchDropdown.classList.remove("hidden");
+}
+
+// Modify the howRecentSearches function to handle both recent searches and suggestions
+function showRecentSearches() {
+    const query = searchInput.value.trim();
+    const recentSearches = JSON.parse(localStorage.getItem("recentSearches")) || [];
+    
+    // If there's a query, fetch suggestions instead of showing recent searches
+    if (query.length > 0) {
+        return; // debounceSearch will handle this
+    }
+    
+    // If no query but there are recent searches, show them
+    if (recentSearches.length > 0) {
+        searchDropdown.innerHTML = '';
+        
+        // Add a header for recent searches
+        const header = document.createElement("div");
+        header.className = "px-4 py-2 text-xs text-gray-500 bg-gray-100";
+        header.textContent = "RECENT SEARCHES";
+        searchDropdown.appendChild(header);
+        
+        // Add recent searches
+        recentSearches.forEach(city => {
+            const item = document.createElement("div");
+            item.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center";
+            
+            item.innerHTML = `
+                <i class="fas fa-history text-gray-400 mr-2"></i>
+                <span>${city}</span>
+            `;
+            
+            item.addEventListener("click", () => {
+                searchInput.value = city;
+                searchDropdown.classList.add("hidden");
+                handleSearch();
+            });
+            
+            searchDropdown.appendChild(item);
+        });
+        
+        searchDropdown.classList.remove("hidden");
+    }
+}
+
+// Add click away listener to close dropdown if user clicks outside
+document.addEventListener("click", (e) => {
+    if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+        searchDropdown.classList.add("hidden");
+    }
+});
+
+// Additional enhancements for the search input
+searchInput.addEventListener("focus", () => {
+    // When input is focused, show recent searches if we have any and no query
+    if (searchInput.value.trim() === '') {
+        showRecentSearches();
+    }
+});

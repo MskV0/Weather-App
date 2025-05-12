@@ -25,13 +25,8 @@ A simple and responsive weather forecast web application that provides real-time
 
 2. **Open the project in your code editor (VSCode, etc.)**.
 
-3. **Install Dependencies** (if any, for example if you use a build tool like Webpack):
 
-   bash
-   npm install
-
-
-4. **Run the app**:
+3. **Run the app**:
    Open `index.html` in your browser. There’s no need for a server if you’re just viewing static files locally.
 
 ## Usage
